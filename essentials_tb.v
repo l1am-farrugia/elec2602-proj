@@ -36,16 +36,16 @@ module essentials_tb;
 
         // using hex for simplicity
         // load 15 into register 0 (LDI) takes 3 cycles to execute
-        instructionSignal = 16'h0000; 
+        instructionSignal = 16'h0000; // ldi r0
         @(negedge clockSignal);     
-        instructionSignal = 16'h000F; 
+        instructionSignal = 16'h000F; // 15
         @(negedge clockSignal); 
         @(negedge clockSignal); 
 
         // load 10 into register 1 (LDI) takes 3 cycles to execute
-        instructionSignal = 16'h0400; 
+        instructionSignal = 16'h0400; // ldi r1
         @(negedge clockSignal); 
-        instructionSignal = 16'h000A; 
+        instructionSignal = 16'h000A; // 10 
         @(negedge clockSignal); 
         @(negedge clockSignal); 
 
@@ -77,7 +77,7 @@ module essentials_tb;
 endmodule
 
 // compile
-// iverilog -o essentials alu.v bus_reg.v controller.v d_ff.v fsm.v reg_decoder.v essentials_tb.v
+// iverilog -o essentials alu.v bus_reg.v controller.v fsm.v reg_decoder.v essentials_tb.v
 
 //run
 // vvp essentials

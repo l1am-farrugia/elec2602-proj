@@ -29,8 +29,8 @@ module controller (instruction, clk, rst);
   reg_decoder load_dec (.reg_code(load_reg_code),.enable(load));
   reg_decoder drive_dec (.reg_code(drive_reg_code),.enable(drive));
 
-  always @(*) begin
-    case (drive_reg_code)
+  always @(*) begin // allows only one register to drive the bus at a time
+    case (drive_reg_code) // prevents a contention over bus driving
       3'b000:  bus = r0_out;
       3'b001:  bus = r1_out;
       3'b010:  bus = r2_out;
