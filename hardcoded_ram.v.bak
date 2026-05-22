@@ -1,0 +1,51 @@
+module hardcoded_ram(
+	input[5:0] address
+	output[15:0] instruction
+)
+
+	always @(address) begin
+		case (address)
+			6'd0: instruction = 16'h0000;
+			6'd1: instruction = 16'h0005;
+			6'd2: instruction = 16'h0400;
+			6'd3: instruction = 16'h0003;
+			6'd4: instruction = 16'h4000;
+			6'd5: instruction = 16'h5400;
+			6'd6: instruction = 16'h6100;
+			6'd7: instruction = 16'h0800;
+			6'd8: instruction = 16'h000C;
+			6'd9: instruction = 16'h7200;
+			6'd10: instruction = 16'h8180;
+			6'd11: instruction = 16'h0800;
+			6'd12: instruction = 16'h0063;
+			6'd13: instruction = 16'h1800;
+			6'd14: instruction = 16'h0800;
+			6'd15: instruction = 16'h0007;
+			6'd16: instruction = 16'h7200;
+			6'd17: instruction = 16'h9100;
+			6'd18: instruction = 16'h0000;
+			6'd19: instruction = 16'h1400;
+	end
+
+endmodule
+
+        dut.program_memory.ram_block[0]  =  // LDI r0 decode
+        dut.program_memory.ram_block[1]  =  // r0 = 5
+        dut.program_memory.ram_block[2]  =  // LDI r1 decode
+        dut.program_memory.ram_block[3]  =  // r1 = 3
+        dut.program_memory.ram_block[4]  =  // INC r0
+        dut.program_memory.ram_block[5]  =  // DEC r1
+        dut.program_memory.ram_block[6]  =  // MUL r0, r1
+        dut.program_memory.ram_block[7]  =  // LDI r2 decode
+        dut.program_memory.ram_block[8]  =  // r2 = 12
+        dut.program_memory.ram_block[9]  =  // CMP r0, r2
+        dut.program_memory.ram_block[10] =  // BREQ +3 (to addr 13)
+        dut.program_memory.ram_block[11] =  // (skipped) LDI r2
+        dut.program_memory.ram_block[12] =  // (skipped) r2 = 99
+        dut.program_memory.ram_block[13] =  // MOV r2, r0
+        dut.program_memory.ram_block[14] =  // LDI r2 decode
+        dut.program_memory.ram_block[15] =  // r2 = 7
+        dut.program_memory.ram_block[16] =  // CMP r0, r2
+        dut.program_memory.ram_block[17] =  // BRH +2 (to addr 19)
+        dut.program_memory.ram_block[18] =  // (skipped) NOP-ish
+        dut.program_memory.ram_block[19] = 

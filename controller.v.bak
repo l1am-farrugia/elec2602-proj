@@ -1,4 +1,4 @@
-module controller (clk, rst, start, pmem_in, pmem_write, r0_out, r1_out, r2_out);
+module controller (clk, rst, start, pmem_in, pmem_write);
   input clk, rst, start, pmem_write;
   input [15:0] pmem_in;
 
@@ -8,10 +8,9 @@ module controller (clk, rst, start, pmem_in, pmem_write, r0_out, r1_out, r2_out)
   wire [15:0] a_to_alu, alu_to_g, immediate;
   wire [1:0] alu_op;
   wire imm_enable;
-  output[15:0] r0_out, r1_out, r2_out;
-  wire[15:0] g_out, s_out;
+  wire [15:0] r0_out, r1_out, r2_out, g_out, s_out;
   wire branch, inc_pc;
-  wire [5:0] address;
+  wire [15:0] address;
   wire [15:0] instruction;
   wire [15:0] dmem_out;
   wire [5:0] dmem_address;
@@ -40,19 +39,13 @@ module controller (clk, rst, start, pmem_in, pmem_write, r0_out, r1_out, r2_out)
     .address(address)
   );
 
-//  ram program_memory (
-//    .clk(clk),
-//    .write_enable(pmem_write),
-//    .address(address),
-//    .data_in(pmem_in),
-//    .data_out(instruction)
-//  );
-
-	hardcoded_ram (
-		.address(address),
-		.instruction(instruction)
-	);
-
+  ram program_memory (
+    .clk(clk),
+    .write_enable(pmem_write),
+    .address(address),
+    .data_in(pmem_in),
+    .data_out(instruction)
+  );
 
   ram data_memory (
     .clk(clk),
@@ -72,8 +65,8 @@ module controller (clk, rst, start, pmem_in, pmem_write, r0_out, r1_out, r2_out)
   reg_decoder load_dec (.reg_code(load_reg_code),.enable(load));
   reg_decoder drive_dec (.reg_code(drive_reg_code),.enable(drive));
 
-  always @(*) begin // allows only one register to drive the bus at a time
-    case (drive_reg_code) // prevents a contention over bus driving
+  always @(*) begin
+    case (drive_reg_code)
       3'b000:  bus = r0_out;
       3'b001:  bus = r1_out;
       3'b010:  bus = r2_out;
