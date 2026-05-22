@@ -72,6 +72,7 @@ module fsm (
           4'b1001: next_state = 6'b010111;  // BRH
           4'b1010: next_state = 6'b011000;  // LD
           4'b1011: next_state = 6'b011001;  // ST
+			 4'b1100: next_state = 6'b011010;  // JMP
           default: next_state = 6'b000000;
         endcase
       end
@@ -283,6 +284,16 @@ module fsm (
         dmem_write = 1;
         next_state = 6'b000000;
         inc_pc = 1;
+      end
+		
+		// JMP 1
+      6'b011010: begin
+		  immediate = instruction[11:7];
+		  drive_reg  = 3'b101;
+		  imm_enable = 1;
+		  branch = 1;
+		 
+        next_state = 6'b000000;
       end
 
       default: next_state = 6'b000000;

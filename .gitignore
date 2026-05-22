@@ -1,2 +1,8 @@
 essentials
 .vcd
+
+*.bak
+incremental_db/
+output_files/
+db/
+simulation/

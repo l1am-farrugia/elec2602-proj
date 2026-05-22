@@ -38,7 +38,7 @@ module controller_instantiate (
 	end
 		
 	// controller setup
-	wire r0, r1, r2;
+	wire[15:0] r0, r1, r2;
 	
 	controller controller_inst(
 		.clk(CLOCK_1S),
@@ -65,7 +65,7 @@ module controller_instantiate (
 	);
 	
 	hex16_to_7seg r2_display(
-		.data(5),
+		.data(r2),
 		.HEX0(HEX4),
 		.HEX1(HEX5)
 	);
