@@ -40,18 +40,18 @@ module controller (clk, rst, start, pmem_in, pmem_write, r0_out, r1_out, r2_out)
     .address(address)
   );
 
-//  ram program_memory (
-//    .clk(clk),
-//    .write_enable(pmem_write),
-//    .address(address),
-//    .data_in(pmem_in),
-//    .data_out(instruction)
-//  );
+ ram program_memory (
+   .clk(clk),
+   .write_enable(pmem_write),
+   .address(address),
+   .data_in(pmem_in),
+   .data_out(instruction)
+ );
 
-	hardcoded_ram (
-		.address(address),
-		.instruction(instruction)
-	);
+	// hardcoded_ram (
+	// 	.address(address),
+	// 	.instruction(instruction)
+	// );
 
 
   ram data_memory (

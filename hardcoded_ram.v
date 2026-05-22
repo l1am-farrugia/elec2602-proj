@@ -46,6 +46,9 @@ module hardcoded_ram(
 			6'd17: instruction = 16'h9100;
 			6'd18: instruction = 16'h0000;
 			6'd19: instruction = 16'h1400;
+			6'd20: instruction = 16'h1400;
+			6'd19: instruction = 16'h1400;
+			
 			default: instruction = 16'h0000;
 		endcase
 	end

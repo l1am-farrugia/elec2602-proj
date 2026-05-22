@@ -42,6 +42,7 @@ module extension_tb;
     //   BRH:  {4'b1001, OOOOO, 7'b0}    branch if higher (offset in [11:7])
     //   LD:   {4'b1010, DD, AAAAAA, 4'b0}  load reg from dmem[addr] (addr in [9:4])
     //   ST:   {4'b1011, DD, AAAAAA, 4'b0}  store reg to dmem[addr]  (addr in [9:4])
+    //   JMP:  {4'b1100, OOOOO, 7'b0}    unconditional jump (offset in [11:7])
 
     integer test_num;
     integer pass_count;
@@ -141,6 +142,20 @@ module extension_tb;
         dut.program_memory.ram_block[25] = 16'h0000; // r2 = 0
         dut.program_memory.ram_block[26] = 16'hA050; // LD r0, dmem[5]
         dut.program_memory.ram_block[27] = 16'hA8A0; // LD r2, dmem[10]
+
+        // --- JMP tests ---
+        // At this point: r0=12, r1=12, r2=7
+        //  28: JMP +3             0xC180  (jump unconditionally to addr 31)
+        //      encoding: 1100_00011_0000000 = 16'hC180
+        //  29: LDI r1 decode      0x0400  (SKIPPED)
+        //  30: LDI r1 = 99        0x0063  (SKIPPED)
+        //  31: LDI r0 decode      0x0000  (target of JMP)
+        //  32: LDI r0 = 88        0x0058  (r0 becomes 88)
+        dut.program_memory.ram_block[28] = 16'hC180; // JMP +3 (to addr 31)
+        dut.program_memory.ram_block[29] = 16'h0400; // LDI r1 decode (skipped)
+        dut.program_memory.ram_block[30] = 16'h0063; // r1 = 99 (skipped)
+        dut.program_memory.ram_block[31] = 16'h0000; // LDI r0 decode (target)
+        dut.program_memory.ram_block[32] = 16'h0058; // r0 = 88
 
         // Hold reset for a few cycles
         wait_cycles(3);
@@ -295,6 +310,22 @@ module extension_tb;
         check(dut.r2_out, 16'h0007, "R2 after LD r2,dmem[10] (should be 7)");
 
         // ============================================================
+        // JMP +3 — decode(1) + JMP(1) = 2 cycles
+        // Should unconditionally branch to addr 31, skipping LDI r1, 99
+        // ============================================================
+        $display("\n--- Test: JMP +3 (taken) ---");
+        wait_cycles(2);
+
+        // ============================================================
+        // LDI r0, 88 — 3 cycles (Executes after JMP lands)
+        // Prove that JMP landed here and R1 was not altered.
+        // ============================================================
+        $display("\n--- Test: Execution after JMP ---");
+        wait_cycles(3);
+        check(dut.r0_out, 16'h0058, "R0 = 88 (JMP successfully landed here)");
+        check(dut.r1_out, 16'h000C, "R1 = 12 (JMP skipped LDI r1,99)");
+
+        // ============================================================
         // Summary
         // ============================================================
         $display("\n========================================");
@@ -307,7 +338,8 @@ module extension_tb;
 endmodule
 
 // compile:
-// iverilog -o extension_tb alu.v bus_reg.v controller.v fsm.v reg_decoder.v pc.v ram.v extension_tb.v
+// iverilog -o extension_tb alu.v bus_reg.v controller.v d_ff.v fsm.v reg_decoder.v pc.v ram.v extension_tb.v
 //
 // run:
 // vvp extension_tb
+
