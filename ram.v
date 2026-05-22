@@ -5,12 +5,16 @@ module ram (
   input [15:0] data_in,
   output [15:0] data_out
 );
-reg [15:0]ram_block[0:1023];
+  reg [15:0]ram_block[0:1023];
 
-assign data_out = ram_block[address];
+  assign data_out = ram_block[address];
 
-always @(posedge clk) begin
-  if (write_enable)
-    ram_block[address] <= data_in;
-end
+  always @(posedge clk) begin
+    if (write_enable)
+      ram_block[address] <= data_in;
+  end
+  
 endmodule
+
+
+

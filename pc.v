@@ -5,7 +5,7 @@ module pc(
   input inc_pc,
   input branch,
   input [15:0] bus,
-  output reg [15:0] address
+  output reg [5:0] address
 );
 
 parameter num_bits = 6;

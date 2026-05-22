@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+`timescale 1ns/1ps;
 
 module extension_tb;
     reg clockSignal;
@@ -307,7 +307,7 @@ module extension_tb;
 endmodule
 
 // compile:
-// iverilog -o extension_tb alu.v bus_reg.v controller.v d_ff.v fsm.v reg_decoder.v pc.v ram.v extension_tb.v
+// iverilog -o extension_tb alu.v bus_reg.v controller.v fsm.v reg_decoder.v pc.v ram.v extension_tb.v
 //
 // run:
 // vvp extension_tb

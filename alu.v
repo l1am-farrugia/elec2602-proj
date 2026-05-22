@@ -13,7 +13,7 @@ module alu (reg_in, bus_in, out, alu_op);
     else if (alu_op == 2'b10)
       // mul
       out = reg_in * bus_in;
-    else if (alu_op == 2'b11) begin
+    else if (alu_op == 2'b11) begin // sreg compare operation
       // compare
       out[0] = reg_in > bus_in;
       out[1] = reg_in == bus_in;

@@ -10,7 +10,7 @@ module controller (clk, rst, start, pmem_in, pmem_write);
   wire imm_enable;
   wire [15:0] r0_out, r1_out, r2_out, g_out, s_out;
   wire branch, inc_pc;
-  wire [15:0] address;
+  wire [5:0] address;
   wire [15:0] instruction;
   wire [15:0] dmem_out;
   wire [5:0] dmem_address;

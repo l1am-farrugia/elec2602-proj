@@ -156,7 +156,7 @@ module fsm (
       6'b001011: begin
         immediate = 1;
         imm_enable = 1;
-        drive_reg  = 3'b101;
+        drive_reg  = 3'b101; // 
         alu_op = 0;
         load_reg   = 3'b011;  // G
         next_state = 6'b001100;
