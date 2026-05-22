@@ -6,7 +6,7 @@ module bus_reg (load, out, in, clk, rst);
   always @(posedge clk or posedge rst) begin
     if (rst) begin
       out <= 16'h0000;
-    end 
+    end
       else if (load) begin
       out <= in;
     end
