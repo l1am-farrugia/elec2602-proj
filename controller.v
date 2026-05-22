@@ -1,4 +1,4 @@
-module controller (clk, rst, start, pmem_in, pmem_write);
+module controller (clk, rst, start, pmem_in, pmem_write, r0_out, r1_out, r2_out);
   input clk, rst, start, pmem_write;
   input [15:0] pmem_in;
 
@@ -8,7 +8,8 @@ module controller (clk, rst, start, pmem_in, pmem_write);
   wire [15:0] a_to_alu, alu_to_g, immediate;
   wire [1:0] alu_op;
   wire imm_enable;
-  wire [15:0] r0_out, r1_out, r2_out, g_out, s_out;
+  output[15:0] r0_out, r1_out, r2_out;
+  wire[15:0] g_out, s_out;
   wire branch, inc_pc;
   wire [15:0] address;
   wire [15:0] instruction;
@@ -39,13 +40,19 @@ module controller (clk, rst, start, pmem_in, pmem_write);
     .address(address)
   );
 
-  ram program_memory (
-    .clk(clk),
-    .write_enable(pmem_write),
-    .address(address),
-    .data_in(pmem_in),
-    .data_out(instruction)
-  );
+//  ram program_memory (
+//    .clk(clk),
+//    .write_enable(pmem_write),
+//    .address(address),
+//    .data_in(pmem_in),
+//    .data_out(instruction)
+//  );
+
+	hardcoded_ram (
+		.address(address),
+		.instruction(instruction)
+	);
+
 
   ram data_memory (
     .clk(clk),
